@@ -1,17 +1,25 @@
 package com.eci.ls.repository;
-import org.springframework.stereotype.Service;
+import com.eci.ls.model.Word;
+import com.eci.ls.repository.mongo.LogRepositoryMongoDB;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.List;
 
-@Service
-public class LogRepository {
-    private ConcurrentHashMap<String, LocalDate>  cadenas = new ConcurrentHashMap<>();
+@Repository
+public class LogRepository implements LogRepositoryInterface{
 
-    public ConcurrentHashMap saveAndShow(String cadena){
-        LocalDate date = LocalDate.now();
-        cadenas.put(cadena, date);
-        return cadenas;
+    @Autowired
+    private final LogRepositoryMongoDB mongoDB;
+
+    public LogRepository(LogRepositoryMongoDB mongoDB){
+        this.mongoDB = mongoDB;
+    }
+    @Override
+    public List saveAndShow(String cadena){
+        mongoDB.save(new Word(cadena, LocalDate.now()));
+        return mongoDB.findAll();
     }
 
 }

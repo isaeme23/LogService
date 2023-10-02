@@ -10,8 +10,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 
+// dbpassword
 @RestController
 public class LogController {
 
@@ -21,7 +23,7 @@ public class LogController {
     @PutMapping("/hello")
     public ResponseEntity<?> cadenas(@RequestBody String cadena) {
         try{
-            ConcurrentHashMap<String, LocalDate> cadenas = logService.saveAndShow(cadena);
+            List cadenas = logService.saveAndShow(cadena);
             return ResponseEntity.ok(cadenas);
         } catch (Exception e){
             return ResponseEntity.badRequest().body(e.getMessage());
